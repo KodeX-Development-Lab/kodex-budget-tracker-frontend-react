@@ -8,16 +8,16 @@ import { AppSidebar } from '@/components/layout/app-sidebar'
 import SkipToMain from '@/components/skip-to-main'
 
 export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: async ({ context: { auth } }: any) => {
-    const { isAuthenticated } = auth
-    if (!isAuthenticated) {
-      throw redirect({
-        to: '/login',
-      })
-    }
-    // If authenticated, allow the route to continue
-    return { auth }
-  },
+  // beforeLoad: async ({ context: { auth } }: any) => {
+  //   const { isAuthenticated } = auth
+  //   if (!isAuthenticated) {
+  //     throw redirect({
+  //       to: '/login',
+  //     })
+  //   }
+  //   // If authenticated, allow the route to continue
+  //   return { auth }
+  // },
   component: RouteComponent,
 })
 

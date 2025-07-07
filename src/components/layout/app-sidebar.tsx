@@ -1,5 +1,3 @@
-import { useGetAllEnums } from '@/graphql/queries/product.query'
-import { useEnumStore } from '@/stores/enumStore'
 import {
   Sidebar,
   SidebarContent,

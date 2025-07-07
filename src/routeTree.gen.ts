@@ -25,35 +25,13 @@ import { Route as authSignInImport } from './routes/(auth)/sign-in'
 import { Route as authOtpImport } from './routes/(auth)/otp'
 import { Route as authForgotPasswordImport } from './routes/(auth)/forgot-password'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings/route'
-import { Route as AuthenticatedUsersIndexImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedTasksIndexImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexImport } from './routes/_authenticated/settings/index'
-import { Route as AuthenticatedSalesIndexImport } from './routes/_authenticated/sales/index'
-import { Route as AuthenticatedPurchasesIndexImport } from './routes/_authenticated/purchases/index'
-import { Route as AuthenticatedProductsIndexImport } from './routes/_authenticated/products/index'
 import { Route as AuthenticatedHelpCenterIndexImport } from './routes/_authenticated/help-center/index'
-import { Route as AuthenticatedChatsIndexImport } from './routes/_authenticated/chats/index'
-import { Route as AuthenticatedAppsIndexImport } from './routes/_authenticated/apps/index'
 import { Route as AuthenticatedSettingsNotificationsImport } from './routes/_authenticated/settings/notifications'
 import { Route as AuthenticatedSettingsDisplayImport } from './routes/_authenticated/settings/display'
 import { Route as AuthenticatedSettingsAppearanceImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedSettingsAccountImport } from './routes/_authenticated/settings/account'
-import { Route as AuthenticatedSalesCreateImport } from './routes/_authenticated/sales/create'
-import { Route as AuthenticatedPurchasesCreateImport } from './routes/_authenticated/purchases/create'
-import { Route as AuthenticatedProductsCreateImport } from './routes/_authenticated/products/create'
-import { Route as AuthenticatedSalesSaleReturnsIndexImport } from './routes/_authenticated/sales/sale-returns/index'
-import { Route as AuthenticatedSalesCustomersIndexImport } from './routes/_authenticated/sales/customers/index'
-import { Route as AuthenticatedPurchasesSuppliersIndexImport } from './routes/_authenticated/purchases/suppliers/index'
-import { Route as AuthenticatedPurchasesPurchaseReturnsIndexImport } from './routes/_authenticated/purchases/purchase-returns/index'
-import { Route as AuthenticatedProductsUnitsIndexImport } from './routes/_authenticated/products/units/index'
-import { Route as AuthenticatedProductsCategoriesIndexImport } from './routes/_authenticated/products/categories/index'
-import { Route as AuthenticatedProductsBrandsIndexImport } from './routes/_authenticated/products/brands/index'
-import { Route as AuthenticatedSalesSaleReturnsCreateImport } from './routes/_authenticated/sales/sale-returns/create'
-import { Route as AuthenticatedSalesCustomersCreateImport } from './routes/_authenticated/sales/customers/create'
-import { Route as AuthenticatedPurchasesSuppliersCreateImport } from './routes/_authenticated/purchases/suppliers/create'
-import { Route as AuthenticatedPurchasesPurchaseReturnsCreateImport } from './routes/_authenticated/purchases/purchase-returns/create'
-import { Route as AuthenticatedPurchasesIdEditIndexImport } from './routes/_authenticated/purchases/$id/edit/index'
-import { Route as AuthenticatedPurchasesIdDetailIndexImport } from './routes/_authenticated/purchases/$id/detail/index'
 
 // Create/Update Routes
 
@@ -142,12 +120,6 @@ const AuthenticatedSettingsRouteRoute = AuthenticatedSettingsRouteImport.update(
   } as any,
 )
 
-const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexImport.update({
-  id: '/users/',
-  path: '/users/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-
 const AuthenticatedTasksIndexRoute = AuthenticatedTasksIndexImport.update({
   id: '/tasks/',
   path: '/tasks/',
@@ -162,45 +134,12 @@ const AuthenticatedSettingsIndexRoute = AuthenticatedSettingsIndexImport.update(
   } as any,
 )
 
-const AuthenticatedSalesIndexRoute = AuthenticatedSalesIndexImport.update({
-  id: '/sales/',
-  path: '/sales/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-
-const AuthenticatedPurchasesIndexRoute =
-  AuthenticatedPurchasesIndexImport.update({
-    id: '/purchases/',
-    path: '/purchases/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedProductsIndexRoute = AuthenticatedProductsIndexImport.update(
-  {
-    id: '/products/',
-    path: '/products/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any,
-)
-
 const AuthenticatedHelpCenterIndexRoute =
   AuthenticatedHelpCenterIndexImport.update({
     id: '/help-center/',
     path: '/help-center/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-
-const AuthenticatedChatsIndexRoute = AuthenticatedChatsIndexImport.update({
-  id: '/chats/',
-  path: '/chats/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-
-const AuthenticatedAppsIndexRoute = AuthenticatedAppsIndexImport.update({
-  id: '/apps/',
-  path: '/apps/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 
 const AuthenticatedSettingsNotificationsRoute =
   AuthenticatedSettingsNotificationsImport.update({
@@ -228,117 +167,6 @@ const AuthenticatedSettingsAccountRoute =
     id: '/account',
     path: '/account',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
-  } as any)
-
-const AuthenticatedSalesCreateRoute = AuthenticatedSalesCreateImport.update({
-  id: '/sales/create',
-  path: '/sales/create',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-
-const AuthenticatedPurchasesCreateRoute =
-  AuthenticatedPurchasesCreateImport.update({
-    id: '/purchases/create',
-    path: '/purchases/create',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedProductsCreateRoute =
-  AuthenticatedProductsCreateImport.update({
-    id: '/products/create',
-    path: '/products/create',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedSalesSaleReturnsIndexRoute =
-  AuthenticatedSalesSaleReturnsIndexImport.update({
-    id: '/sales/sale-returns/',
-    path: '/sales/sale-returns/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedSalesCustomersIndexRoute =
-  AuthenticatedSalesCustomersIndexImport.update({
-    id: '/sales/customers/',
-    path: '/sales/customers/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedPurchasesSuppliersIndexRoute =
-  AuthenticatedPurchasesSuppliersIndexImport.update({
-    id: '/purchases/suppliers/',
-    path: '/purchases/suppliers/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedPurchasesPurchaseReturnsIndexRoute =
-  AuthenticatedPurchasesPurchaseReturnsIndexImport.update({
-    id: '/purchases/purchase-returns/',
-    path: '/purchases/purchase-returns/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedProductsUnitsIndexRoute =
-  AuthenticatedProductsUnitsIndexImport.update({
-    id: '/products/units/',
-    path: '/products/units/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedProductsCategoriesIndexRoute =
-  AuthenticatedProductsCategoriesIndexImport.update({
-    id: '/products/categories/',
-    path: '/products/categories/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedProductsBrandsIndexRoute =
-  AuthenticatedProductsBrandsIndexImport.update({
-    id: '/products/brands/',
-    path: '/products/brands/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedSalesSaleReturnsCreateRoute =
-  AuthenticatedSalesSaleReturnsCreateImport.update({
-    id: '/sales/sale-returns/create',
-    path: '/sales/sale-returns/create',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedSalesCustomersCreateRoute =
-  AuthenticatedSalesCustomersCreateImport.update({
-    id: '/sales/customers/create',
-    path: '/sales/customers/create',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedPurchasesSuppliersCreateRoute =
-  AuthenticatedPurchasesSuppliersCreateImport.update({
-    id: '/purchases/suppliers/create',
-    path: '/purchases/suppliers/create',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedPurchasesPurchaseReturnsCreateRoute =
-  AuthenticatedPurchasesPurchaseReturnsCreateImport.update({
-    id: '/purchases/purchase-returns/create',
-    path: '/purchases/purchase-returns/create',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedPurchasesIdEditIndexRoute =
-  AuthenticatedPurchasesIdEditIndexImport.update({
-    id: '/purchases/$id/edit/',
-    path: '/purchases/$id/edit/',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-
-const AuthenticatedPurchasesIdDetailIndexRoute =
-  AuthenticatedPurchasesIdDetailIndexImport.update({
-    id: '/purchases/$id/detail/',
-    path: '/purchases/$id/detail/',
-    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -443,27 +271,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
-    '/_authenticated/products/create': {
-      id: '/_authenticated/products/create'
-      path: '/products/create'
-      fullPath: '/products/create'
-      preLoaderRoute: typeof AuthenticatedProductsCreateImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/purchases/create': {
-      id: '/_authenticated/purchases/create'
-      path: '/purchases/create'
-      fullPath: '/purchases/create'
-      preLoaderRoute: typeof AuthenticatedPurchasesCreateImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/sales/create': {
-      id: '/_authenticated/sales/create'
-      path: '/sales/create'
-      fullPath: '/sales/create'
-      preLoaderRoute: typeof AuthenticatedSalesCreateImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
     '/_authenticated/settings/account': {
       id: '/_authenticated/settings/account'
       path: '/account'
@@ -492,46 +299,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsNotificationsImport
       parentRoute: typeof AuthenticatedSettingsRouteImport
     }
-    '/_authenticated/apps/': {
-      id: '/_authenticated/apps/'
-      path: '/apps'
-      fullPath: '/apps'
-      preLoaderRoute: typeof AuthenticatedAppsIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/chats/': {
-      id: '/_authenticated/chats/'
-      path: '/chats'
-      fullPath: '/chats'
-      preLoaderRoute: typeof AuthenticatedChatsIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
     '/_authenticated/help-center/': {
       id: '/_authenticated/help-center/'
       path: '/help-center'
       fullPath: '/help-center'
       preLoaderRoute: typeof AuthenticatedHelpCenterIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/products/': {
-      id: '/_authenticated/products/'
-      path: '/products'
-      fullPath: '/products'
-      preLoaderRoute: typeof AuthenticatedProductsIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/purchases/': {
-      id: '/_authenticated/purchases/'
-      path: '/purchases'
-      fullPath: '/purchases'
-      preLoaderRoute: typeof AuthenticatedPurchasesIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/sales/': {
-      id: '/_authenticated/sales/'
-      path: '/sales'
-      fullPath: '/sales'
-      preLoaderRoute: typeof AuthenticatedSalesIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/settings/': {
@@ -546,104 +318,6 @@ declare module '@tanstack/react-router' {
       path: '/tasks'
       fullPath: '/tasks'
       preLoaderRoute: typeof AuthenticatedTasksIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/users/': {
-      id: '/_authenticated/users/'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof AuthenticatedUsersIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/purchases/purchase-returns/create': {
-      id: '/_authenticated/purchases/purchase-returns/create'
-      path: '/purchases/purchase-returns/create'
-      fullPath: '/purchases/purchase-returns/create'
-      preLoaderRoute: typeof AuthenticatedPurchasesPurchaseReturnsCreateImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/purchases/suppliers/create': {
-      id: '/_authenticated/purchases/suppliers/create'
-      path: '/purchases/suppliers/create'
-      fullPath: '/purchases/suppliers/create'
-      preLoaderRoute: typeof AuthenticatedPurchasesSuppliersCreateImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/sales/customers/create': {
-      id: '/_authenticated/sales/customers/create'
-      path: '/sales/customers/create'
-      fullPath: '/sales/customers/create'
-      preLoaderRoute: typeof AuthenticatedSalesCustomersCreateImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/sales/sale-returns/create': {
-      id: '/_authenticated/sales/sale-returns/create'
-      path: '/sales/sale-returns/create'
-      fullPath: '/sales/sale-returns/create'
-      preLoaderRoute: typeof AuthenticatedSalesSaleReturnsCreateImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/products/brands/': {
-      id: '/_authenticated/products/brands/'
-      path: '/products/brands'
-      fullPath: '/products/brands'
-      preLoaderRoute: typeof AuthenticatedProductsBrandsIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/products/categories/': {
-      id: '/_authenticated/products/categories/'
-      path: '/products/categories'
-      fullPath: '/products/categories'
-      preLoaderRoute: typeof AuthenticatedProductsCategoriesIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/products/units/': {
-      id: '/_authenticated/products/units/'
-      path: '/products/units'
-      fullPath: '/products/units'
-      preLoaderRoute: typeof AuthenticatedProductsUnitsIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/purchases/purchase-returns/': {
-      id: '/_authenticated/purchases/purchase-returns/'
-      path: '/purchases/purchase-returns'
-      fullPath: '/purchases/purchase-returns'
-      preLoaderRoute: typeof AuthenticatedPurchasesPurchaseReturnsIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/purchases/suppliers/': {
-      id: '/_authenticated/purchases/suppliers/'
-      path: '/purchases/suppliers'
-      fullPath: '/purchases/suppliers'
-      preLoaderRoute: typeof AuthenticatedPurchasesSuppliersIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/sales/customers/': {
-      id: '/_authenticated/sales/customers/'
-      path: '/sales/customers'
-      fullPath: '/sales/customers'
-      preLoaderRoute: typeof AuthenticatedSalesCustomersIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/sales/sale-returns/': {
-      id: '/_authenticated/sales/sale-returns/'
-      path: '/sales/sale-returns'
-      fullPath: '/sales/sale-returns'
-      preLoaderRoute: typeof AuthenticatedSalesSaleReturnsIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/purchases/$id/detail/': {
-      id: '/_authenticated/purchases/$id/detail/'
-      path: '/purchases/$id/detail'
-      fullPath: '/purchases/$id/detail'
-      preLoaderRoute: typeof AuthenticatedPurchasesIdDetailIndexImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
-    '/_authenticated/purchases/$id/edit/': {
-      id: '/_authenticated/purchases/$id/edit/'
-      path: '/purchases/$id/edit'
-      fullPath: '/purchases/$id/edit'
-      preLoaderRoute: typeof AuthenticatedPurchasesIdEditIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
   }
@@ -677,69 +351,15 @@ const AuthenticatedSettingsRouteRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
-  AuthenticatedProductsCreateRoute: typeof AuthenticatedProductsCreateRoute
-  AuthenticatedPurchasesCreateRoute: typeof AuthenticatedPurchasesCreateRoute
-  AuthenticatedSalesCreateRoute: typeof AuthenticatedSalesCreateRoute
-  AuthenticatedAppsIndexRoute: typeof AuthenticatedAppsIndexRoute
-  AuthenticatedChatsIndexRoute: typeof AuthenticatedChatsIndexRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
-  AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
-  AuthenticatedPurchasesIndexRoute: typeof AuthenticatedPurchasesIndexRoute
-  AuthenticatedSalesIndexRoute: typeof AuthenticatedSalesIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
-  AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
-  AuthenticatedPurchasesPurchaseReturnsCreateRoute: typeof AuthenticatedPurchasesPurchaseReturnsCreateRoute
-  AuthenticatedPurchasesSuppliersCreateRoute: typeof AuthenticatedPurchasesSuppliersCreateRoute
-  AuthenticatedSalesCustomersCreateRoute: typeof AuthenticatedSalesCustomersCreateRoute
-  AuthenticatedSalesSaleReturnsCreateRoute: typeof AuthenticatedSalesSaleReturnsCreateRoute
-  AuthenticatedProductsBrandsIndexRoute: typeof AuthenticatedProductsBrandsIndexRoute
-  AuthenticatedProductsCategoriesIndexRoute: typeof AuthenticatedProductsCategoriesIndexRoute
-  AuthenticatedProductsUnitsIndexRoute: typeof AuthenticatedProductsUnitsIndexRoute
-  AuthenticatedPurchasesPurchaseReturnsIndexRoute: typeof AuthenticatedPurchasesPurchaseReturnsIndexRoute
-  AuthenticatedPurchasesSuppliersIndexRoute: typeof AuthenticatedPurchasesSuppliersIndexRoute
-  AuthenticatedSalesCustomersIndexRoute: typeof AuthenticatedSalesCustomersIndexRoute
-  AuthenticatedSalesSaleReturnsIndexRoute: typeof AuthenticatedSalesSaleReturnsIndexRoute
-  AuthenticatedPurchasesIdDetailIndexRoute: typeof AuthenticatedPurchasesIdDetailIndexRoute
-  AuthenticatedPurchasesIdEditIndexRoute: typeof AuthenticatedPurchasesIdEditIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
-  AuthenticatedProductsCreateRoute: AuthenticatedProductsCreateRoute,
-  AuthenticatedPurchasesCreateRoute: AuthenticatedPurchasesCreateRoute,
-  AuthenticatedSalesCreateRoute: AuthenticatedSalesCreateRoute,
-  AuthenticatedAppsIndexRoute: AuthenticatedAppsIndexRoute,
-  AuthenticatedChatsIndexRoute: AuthenticatedChatsIndexRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
-  AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
-  AuthenticatedPurchasesIndexRoute: AuthenticatedPurchasesIndexRoute,
-  AuthenticatedSalesIndexRoute: AuthenticatedSalesIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
-  AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
-  AuthenticatedPurchasesPurchaseReturnsCreateRoute:
-    AuthenticatedPurchasesPurchaseReturnsCreateRoute,
-  AuthenticatedPurchasesSuppliersCreateRoute:
-    AuthenticatedPurchasesSuppliersCreateRoute,
-  AuthenticatedSalesCustomersCreateRoute:
-    AuthenticatedSalesCustomersCreateRoute,
-  AuthenticatedSalesSaleReturnsCreateRoute:
-    AuthenticatedSalesSaleReturnsCreateRoute,
-  AuthenticatedProductsBrandsIndexRoute: AuthenticatedProductsBrandsIndexRoute,
-  AuthenticatedProductsCategoriesIndexRoute:
-    AuthenticatedProductsCategoriesIndexRoute,
-  AuthenticatedProductsUnitsIndexRoute: AuthenticatedProductsUnitsIndexRoute,
-  AuthenticatedPurchasesPurchaseReturnsIndexRoute:
-    AuthenticatedPurchasesPurchaseReturnsIndexRoute,
-  AuthenticatedPurchasesSuppliersIndexRoute:
-    AuthenticatedPurchasesSuppliersIndexRoute,
-  AuthenticatedSalesCustomersIndexRoute: AuthenticatedSalesCustomersIndexRoute,
-  AuthenticatedSalesSaleReturnsIndexRoute:
-    AuthenticatedSalesSaleReturnsIndexRoute,
-  AuthenticatedPurchasesIdDetailIndexRoute:
-    AuthenticatedPurchasesIdDetailIndexRoute,
-  AuthenticatedPurchasesIdEditIndexRoute:
-    AuthenticatedPurchasesIdEditIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -760,35 +380,13 @@ export interface FileRoutesByFullPath {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
-  '/products/create': typeof AuthenticatedProductsCreateRoute
-  '/purchases/create': typeof AuthenticatedPurchasesCreateRoute
-  '/sales/create': typeof AuthenticatedSalesCreateRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
-  '/apps': typeof AuthenticatedAppsIndexRoute
-  '/chats': typeof AuthenticatedChatsIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
-  '/products': typeof AuthenticatedProductsIndexRoute
-  '/purchases': typeof AuthenticatedPurchasesIndexRoute
-  '/sales': typeof AuthenticatedSalesIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
-  '/users': typeof AuthenticatedUsersIndexRoute
-  '/purchases/purchase-returns/create': typeof AuthenticatedPurchasesPurchaseReturnsCreateRoute
-  '/purchases/suppliers/create': typeof AuthenticatedPurchasesSuppliersCreateRoute
-  '/sales/customers/create': typeof AuthenticatedSalesCustomersCreateRoute
-  '/sales/sale-returns/create': typeof AuthenticatedSalesSaleReturnsCreateRoute
-  '/products/brands': typeof AuthenticatedProductsBrandsIndexRoute
-  '/products/categories': typeof AuthenticatedProductsCategoriesIndexRoute
-  '/products/units': typeof AuthenticatedProductsUnitsIndexRoute
-  '/purchases/purchase-returns': typeof AuthenticatedPurchasesPurchaseReturnsIndexRoute
-  '/purchases/suppliers': typeof AuthenticatedPurchasesSuppliersIndexRoute
-  '/sales/customers': typeof AuthenticatedSalesCustomersIndexRoute
-  '/sales/sale-returns': typeof AuthenticatedSalesSaleReturnsIndexRoute
-  '/purchases/$id/detail': typeof AuthenticatedPurchasesIdDetailIndexRoute
-  '/purchases/$id/edit': typeof AuthenticatedPurchasesIdEditIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -804,35 +402,13 @@ export interface FileRoutesByTo {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
-  '/products/create': typeof AuthenticatedProductsCreateRoute
-  '/purchases/create': typeof AuthenticatedPurchasesCreateRoute
-  '/sales/create': typeof AuthenticatedSalesCreateRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
-  '/apps': typeof AuthenticatedAppsIndexRoute
-  '/chats': typeof AuthenticatedChatsIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
-  '/products': typeof AuthenticatedProductsIndexRoute
-  '/purchases': typeof AuthenticatedPurchasesIndexRoute
-  '/sales': typeof AuthenticatedSalesIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
-  '/users': typeof AuthenticatedUsersIndexRoute
-  '/purchases/purchase-returns/create': typeof AuthenticatedPurchasesPurchaseReturnsCreateRoute
-  '/purchases/suppliers/create': typeof AuthenticatedPurchasesSuppliersCreateRoute
-  '/sales/customers/create': typeof AuthenticatedSalesCustomersCreateRoute
-  '/sales/sale-returns/create': typeof AuthenticatedSalesSaleReturnsCreateRoute
-  '/products/brands': typeof AuthenticatedProductsBrandsIndexRoute
-  '/products/categories': typeof AuthenticatedProductsCategoriesIndexRoute
-  '/products/units': typeof AuthenticatedProductsUnitsIndexRoute
-  '/purchases/purchase-returns': typeof AuthenticatedPurchasesPurchaseReturnsIndexRoute
-  '/purchases/suppliers': typeof AuthenticatedPurchasesSuppliersIndexRoute
-  '/sales/customers': typeof AuthenticatedSalesCustomersIndexRoute
-  '/sales/sale-returns': typeof AuthenticatedSalesSaleReturnsIndexRoute
-  '/purchases/$id/detail': typeof AuthenticatedPurchasesIdDetailIndexRoute
-  '/purchases/$id/edit': typeof AuthenticatedPurchasesIdEditIndexRoute
 }
 
 export interface FileRoutesById {
@@ -851,35 +427,13 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
   '/_authenticated/': typeof AuthenticatedIndexRoute
-  '/_authenticated/products/create': typeof AuthenticatedProductsCreateRoute
-  '/_authenticated/purchases/create': typeof AuthenticatedPurchasesCreateRoute
-  '/_authenticated/sales/create': typeof AuthenticatedSalesCreateRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
-  '/_authenticated/apps/': typeof AuthenticatedAppsIndexRoute
-  '/_authenticated/chats/': typeof AuthenticatedChatsIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
-  '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
-  '/_authenticated/purchases/': typeof AuthenticatedPurchasesIndexRoute
-  '/_authenticated/sales/': typeof AuthenticatedSalesIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
-  '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
-  '/_authenticated/purchases/purchase-returns/create': typeof AuthenticatedPurchasesPurchaseReturnsCreateRoute
-  '/_authenticated/purchases/suppliers/create': typeof AuthenticatedPurchasesSuppliersCreateRoute
-  '/_authenticated/sales/customers/create': typeof AuthenticatedSalesCustomersCreateRoute
-  '/_authenticated/sales/sale-returns/create': typeof AuthenticatedSalesSaleReturnsCreateRoute
-  '/_authenticated/products/brands/': typeof AuthenticatedProductsBrandsIndexRoute
-  '/_authenticated/products/categories/': typeof AuthenticatedProductsCategoriesIndexRoute
-  '/_authenticated/products/units/': typeof AuthenticatedProductsUnitsIndexRoute
-  '/_authenticated/purchases/purchase-returns/': typeof AuthenticatedPurchasesPurchaseReturnsIndexRoute
-  '/_authenticated/purchases/suppliers/': typeof AuthenticatedPurchasesSuppliersIndexRoute
-  '/_authenticated/sales/customers/': typeof AuthenticatedSalesCustomersIndexRoute
-  '/_authenticated/sales/sale-returns/': typeof AuthenticatedSalesSaleReturnsIndexRoute
-  '/_authenticated/purchases/$id/detail/': typeof AuthenticatedPurchasesIdDetailIndexRoute
-  '/_authenticated/purchases/$id/edit/': typeof AuthenticatedPurchasesIdEditIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -899,35 +453,13 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/'
-    | '/products/create'
-    | '/purchases/create'
-    | '/sales/create'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
-    | '/apps'
-    | '/chats'
     | '/help-center'
-    | '/products'
-    | '/purchases'
-    | '/sales'
     | '/settings/'
     | '/tasks'
-    | '/users'
-    | '/purchases/purchase-returns/create'
-    | '/purchases/suppliers/create'
-    | '/sales/customers/create'
-    | '/sales/sale-returns/create'
-    | '/products/brands'
-    | '/products/categories'
-    | '/products/units'
-    | '/purchases/purchase-returns'
-    | '/purchases/suppliers'
-    | '/sales/customers'
-    | '/sales/sale-returns'
-    | '/purchases/$id/detail'
-    | '/purchases/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -942,35 +474,13 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/'
-    | '/products/create'
-    | '/purchases/create'
-    | '/sales/create'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
-    | '/apps'
-    | '/chats'
     | '/help-center'
-    | '/products'
-    | '/purchases'
-    | '/sales'
     | '/settings'
     | '/tasks'
-    | '/users'
-    | '/purchases/purchase-returns/create'
-    | '/purchases/suppliers/create'
-    | '/sales/customers/create'
-    | '/sales/sale-returns/create'
-    | '/products/brands'
-    | '/products/categories'
-    | '/products/units'
-    | '/purchases/purchase-returns'
-    | '/purchases/suppliers'
-    | '/sales/customers'
-    | '/sales/sale-returns'
-    | '/purchases/$id/detail'
-    | '/purchases/$id/edit'
   id:
     | '__root__'
     | '/_authenticated'
@@ -987,35 +497,13 @@ export interface FileRouteTypes {
     | '/(errors)/500'
     | '/(errors)/503'
     | '/_authenticated/'
-    | '/_authenticated/products/create'
-    | '/_authenticated/purchases/create'
-    | '/_authenticated/sales/create'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
     | '/_authenticated/settings/display'
     | '/_authenticated/settings/notifications'
-    | '/_authenticated/apps/'
-    | '/_authenticated/chats/'
     | '/_authenticated/help-center/'
-    | '/_authenticated/products/'
-    | '/_authenticated/purchases/'
-    | '/_authenticated/sales/'
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
-    | '/_authenticated/users/'
-    | '/_authenticated/purchases/purchase-returns/create'
-    | '/_authenticated/purchases/suppliers/create'
-    | '/_authenticated/sales/customers/create'
-    | '/_authenticated/sales/sale-returns/create'
-    | '/_authenticated/products/brands/'
-    | '/_authenticated/products/categories/'
-    | '/_authenticated/products/units/'
-    | '/_authenticated/purchases/purchase-returns/'
-    | '/_authenticated/purchases/suppliers/'
-    | '/_authenticated/sales/customers/'
-    | '/_authenticated/sales/sale-returns/'
-    | '/_authenticated/purchases/$id/detail/'
-    | '/_authenticated/purchases/$id/edit/'
   fileRoutesById: FileRoutesById
 }
 
@@ -1078,30 +566,8 @@ export const routeTree = rootRoute
       "children": [
         "/_authenticated/settings",
         "/_authenticated/",
-        "/_authenticated/products/create",
-        "/_authenticated/purchases/create",
-        "/_authenticated/sales/create",
-        "/_authenticated/apps/",
-        "/_authenticated/chats/",
         "/_authenticated/help-center/",
-        "/_authenticated/products/",
-        "/_authenticated/purchases/",
-        "/_authenticated/sales/",
-        "/_authenticated/tasks/",
-        "/_authenticated/users/",
-        "/_authenticated/purchases/purchase-returns/create",
-        "/_authenticated/purchases/suppliers/create",
-        "/_authenticated/sales/customers/create",
-        "/_authenticated/sales/sale-returns/create",
-        "/_authenticated/products/brands/",
-        "/_authenticated/products/categories/",
-        "/_authenticated/products/units/",
-        "/_authenticated/purchases/purchase-returns/",
-        "/_authenticated/purchases/suppliers/",
-        "/_authenticated/sales/customers/",
-        "/_authenticated/sales/sale-returns/",
-        "/_authenticated/purchases/$id/detail/",
-        "/_authenticated/purchases/$id/edit/"
+        "/_authenticated/tasks/"
       ]
     },
     "/login": {
@@ -1152,18 +618,6 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/index.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/products/create": {
-      "filePath": "_authenticated/products/create.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/purchases/create": {
-      "filePath": "_authenticated/purchases/create.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/sales/create": {
-      "filePath": "_authenticated/sales/create.tsx",
-      "parent": "/_authenticated"
-    },
     "/_authenticated/settings/account": {
       "filePath": "_authenticated/settings/account.tsx",
       "parent": "/_authenticated/settings"
@@ -1180,28 +634,8 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/settings/notifications.tsx",
       "parent": "/_authenticated/settings"
     },
-    "/_authenticated/apps/": {
-      "filePath": "_authenticated/apps/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/chats/": {
-      "filePath": "_authenticated/chats/index.tsx",
-      "parent": "/_authenticated"
-    },
     "/_authenticated/help-center/": {
       "filePath": "_authenticated/help-center/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/products/": {
-      "filePath": "_authenticated/products/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/purchases/": {
-      "filePath": "_authenticated/purchases/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/sales/": {
-      "filePath": "_authenticated/sales/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/settings/": {
@@ -1210,62 +644,6 @@ export const routeTree = rootRoute
     },
     "/_authenticated/tasks/": {
       "filePath": "_authenticated/tasks/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/users/": {
-      "filePath": "_authenticated/users/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/purchases/purchase-returns/create": {
-      "filePath": "_authenticated/purchases/purchase-returns/create.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/purchases/suppliers/create": {
-      "filePath": "_authenticated/purchases/suppliers/create.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/sales/customers/create": {
-      "filePath": "_authenticated/sales/customers/create.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/sales/sale-returns/create": {
-      "filePath": "_authenticated/sales/sale-returns/create.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/products/brands/": {
-      "filePath": "_authenticated/products/brands/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/products/categories/": {
-      "filePath": "_authenticated/products/categories/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/products/units/": {
-      "filePath": "_authenticated/products/units/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/purchases/purchase-returns/": {
-      "filePath": "_authenticated/purchases/purchase-returns/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/purchases/suppliers/": {
-      "filePath": "_authenticated/purchases/suppliers/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/sales/customers/": {
-      "filePath": "_authenticated/sales/customers/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/sales/sale-returns/": {
-      "filePath": "_authenticated/sales/sale-returns/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/purchases/$id/detail/": {
-      "filePath": "_authenticated/purchases/$id/detail/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/purchases/$id/edit/": {
-      "filePath": "_authenticated/purchases/$id/edit/index.tsx",
       "parent": "/_authenticated"
     }
   }

@@ -7,6 +7,7 @@ import {
   IconLayoutDashboard,
   IconNotification,
   IconPackage,
+  IconPackages,
   IconPalette,
   IconSettings,
   IconShoppingBag,
@@ -53,133 +54,6 @@ export const sidebarData: SidebarData = {
           url: '/tasks',
           icon: IconChecklist,
         },
-        // {
-        //   title: 'Apps',
-        //   url: '/apps',
-        //   icon: IconPackages,
-        // },
-        // {
-        //   title: 'Chats',
-        //   url: '/chats',
-        //   badge: '3',
-        //   icon: IconMessages,
-        // },
-        // {
-        //   title: 'Users',
-        //   url: '/users',
-        //   icon: IconUsers,
-        // },
-      ],
-    },
-    {
-      title: 'Inventory',
-      items: [
-        {
-          title: 'Products',
-          icon: IconShoppingBag,
-          items: [
-            {
-              title: 'All Products',
-              url: '/products',
-            },
-            {
-              title: 'Categories',
-              url: '/products/categories',
-            },
-            {
-              title: 'Brands',
-              url: '/products/brands',
-            },
-            {
-              title: 'Units',
-              url: '/products/units',
-            },
-          ],
-        },
-        {
-          title: 'Purchases',
-          icon: IconPackage,
-          items: [
-            {
-              title: 'All Purchases',
-              url: '/purchases',
-            },
-            {
-              title: 'Suppliers',
-              url: '/purchases/suppliers',
-            },
-            {
-              title: 'Purchase Returns',
-              url: '/purchases/purchase-returns',
-            },
-          ],
-        },
-        {
-          title: 'Sales',
-          icon: IconDiscount,
-          items: [
-            {
-              title: 'All Sales',
-              url: '/sales',
-            },
-            {
-              title: 'Customers',
-              url: '/sales/customers',
-            },
-            {
-              title: 'Sales Returns',
-              url: '/sales/sale-returns',
-            },
-          ],
-        },
-        {
-          title: 'Reports',
-          icon: IconFileText,
-          items: [
-            {
-              title: 'Daily Sales Report',
-              url: '/products',
-            },
-            {
-              title: 'Purchase Report',
-              url: '/products/categories',
-            },
-            {
-              title: 'Inventory Report',
-              url: '/products/categories',
-            },
-            {
-              title: 'Profit & Loss',
-              url: '/products/categories',
-            },
-            {
-              title: 'Low Stock Alert',
-              url: '/products/categories',
-            },
-          ],
-        },
-        // {
-        //   title: 'Settings',
-        //   icon: IconSettings,
-        //   items: [
-        //     {
-        //       title: 'Company Info',
-        //       url: '/products',
-        //     },
-        //     {
-        //       title: 'Tax Settings',
-        //       url: '/products/categories',
-        //     },
-        //     {
-        //       title: 'User Roles & Permissions',
-        //       url: '/products/categories',
-        //     },
-        //     {
-        //       title: 'Backup / Restore',
-        //       url: '/products/categories',
-        //     },
-        //   ],
-        // },
       ],
     },
     // {
