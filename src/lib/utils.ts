@@ -15,3 +15,7 @@ export function mapToLabelValue<T extends { id: number; name: string }>(
     value: item.id,
   }))
 }
+
+export function getAccessToken() {
+  return localStorage.getItem('accessToken')
+}

@@ -1,8 +1,11 @@
 import { HTMLAttributes, useState } from 'react'
 import { z } from 'zod'
+import axios from 'axios'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useNavigate } from '@tanstack/react-router'
 import { IconBrandFacebook, IconBrandGithub } from '@tabler/icons-react'
+import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,50 +18,56 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
+import axiosClient from '../../../../lib/axios-client'
+import { RegisterUserSchema, RegisterUserSchemaType } from '../../data/schema'
 
 type SignUpFormProps = HTMLAttributes<HTMLFormElement>
 
-const formSchema = z
-  .object({
-    email: z
-      .string()
-      .min(1, { message: 'Please enter your email' })
-      .email({ message: 'Invalid email address' }),
-    password: z
-      .string()
-      .min(1, {
-        message: 'Please enter your password',
-      })
-      .min(7, {
-        message: 'Password must be at least 7 characters long',
-      }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match.",
-    path: ['confirmPassword'],
-  })
-
 export function SignUpForm({ className, ...props }: SignUpFormProps) {
   const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<RegisterUserSchemaType>({
+    resolver: zodResolver(RegisterUserSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
     },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: RegisterUserSchemaType) {
     setIsLoading(true)
-    // eslint-disable-next-line no-console
-    console.log(data)
 
-    setTimeout(() => {
+    try {
+      const res = await axiosClient.post('/auth/register', {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        password_confirmation: data.confirmPassword,
+      })
+      toast.success(res.data?.message)
+      form.reset()
+      navigate({ to: '/sign-in' })
+    } catch (error: any) {
+      if (error.status == 422) {
+        const apiErrors = error.response?.data
+
+        if (apiErrors?.errors) {
+          Object.entries(apiErrors.errors).forEach(([field, messages]) => {
+            form.setError(field as keyof RegisterUserSchemaType, {
+              type: 'server',
+              message: (messages as string[])[0],
+            })
+          })
+        }
+      } else {
+        toast.success(error.data?.message ?? "Error")
+      }
+    } finally {
       setIsLoading(false)
-    }, 3000)
+    }
   }
 
   return (
@@ -68,6 +77,20 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
         className={cn('grid gap-3', className)}
         {...props}
       >
+        <FormField
+          control={form.control}
+          name='name'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder='John Doe' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name='email'
@@ -111,7 +134,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
           Create Account
         </Button>
 
-        <div className='relative my-2'>
+        {/* <div className='relative my-2'>
           <div className='absolute inset-0 flex items-center'>
             <span className='w-full border-t' />
           </div>
@@ -120,9 +143,9 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
               Or continue with
             </span>
           </div>
-        </div>
+        </div> */}
 
-        <div className='grid grid-cols-2 gap-2'>
+        {/* <div className='grid grid-cols-2 gap-2'>
           <Button
             variant='outline'
             className='w-full'
@@ -139,7 +162,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
           >
             <IconBrandFacebook className='h-4 w-4' /> Facebook
           </Button>
-        </div>
+        </div> */}
       </form>
     </Form>
   )

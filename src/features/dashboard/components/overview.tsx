@@ -1,81 +1,32 @@
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
-const data = [
-  {
-    name: 'Jan',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Feb',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Mar',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Apr',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'May',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Jun',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Jul',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Aug',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Sep',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Oct',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Nov',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Dec',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-]
 
-export function Overview() {
+
+export default function IncomeExpenseGraph({data}: {data: any}) {
   return (
-    <ResponsiveContainer width='100%' height={350}>
-      <BarChart data={data}>
-        <XAxis
-          dataKey='name'
-          stroke='#888888'
-          fontSize={12}
-          tickLine={false}
-          axisLine={false}
-        />
-        <YAxis
-          stroke='#888888'
-          fontSize={12}
-          tickLine={false}
-          axisLine={false}
-          tickFormatter={(value) => `$${value}`}
-        />
-        <Bar
-          dataKey='total'
-          fill='currentColor'
-          radius={[4, 4, 0, 0]}
-          className='fill-primary'
-        />
-      </BarChart>
-    </ResponsiveContainer>
-  )
+    <div className="w-full h-[400px] text-white rounded-xl p-4">
+      <h2 className="text-xl font-semibold mb-4">Income Expense Line Graph</h2>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data}>
+          <XAxis dataKey="month" stroke="#ccc" />
+          <YAxis stroke="#ccc" tickFormatter={(value) => value.toLocaleString()} />
+          <Tooltip
+            formatter={(value: number) => `${value.toLocaleString()} ks`}
+            contentStyle={{ backgroundColor: "#333", borderColor: "#555", color: "#fff" }}
+          />
+          <Legend />
+          <Line type="monotone" dataKey="income" stroke="lime" strokeWidth={3} dot={{ r: 4 }} />
+          <Line type="monotone" dataKey="expense" stroke="red" strokeWidth={3} dot={{ r: 4 }} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
 }

@@ -1,3 +1,4 @@
+import { useAuth } from '@/features/auth/context/auth-context'
 import {
   Sidebar,
   SidebarContent,
@@ -12,6 +13,8 @@ import { sidebarData } from './data/sidebar-data'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { state } = useSidebar()
+  const { user } = useAuth()
+
   return (
     <Sidebar collapsible='icon' variant='sidebar' {...props}>
       <SidebarHeader className='animate-fade-in flex flex-row items-center gap-2 py-3'>
@@ -22,7 +25,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* Brand Name */}
         {state !== 'collapsed' && (
           <h1 className='bg-gradient-to-r from-[oklch(0.58_0.2_240)] to-[oklch(0.7_0.15_260)] bg-clip-text text-lg font-extrabold tracking-tight text-transparent'>
-            Blazepay
+            Expense Tracker System
           </h1>
         )}
       </SidebarHeader>
@@ -33,7 +36,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={sidebarData.user} />
+        <NavUser user={{name: "KMS", email: "admin@gmail.com", photo: ""}} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

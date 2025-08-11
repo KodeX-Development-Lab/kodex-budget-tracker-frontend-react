@@ -27,11 +27,17 @@ import { Route as authForgotPasswordImport } from './routes/(auth)/forgot-passwo
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedTasksIndexImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexImport } from './routes/_authenticated/settings/index'
+import { Route as AuthenticatedRecentBudgetsIndexImport } from './routes/_authenticated/recent-budgets/index'
 import { Route as AuthenticatedHelpCenterIndexImport } from './routes/_authenticated/help-center/index'
+import { Route as AuthenticatedCategoriesIndexImport } from './routes/_authenticated/categories/index'
+import { Route as AuthenticatedBudgetsIndexImport } from './routes/_authenticated/budgets/index'
 import { Route as AuthenticatedSettingsNotificationsImport } from './routes/_authenticated/settings/notifications'
 import { Route as AuthenticatedSettingsDisplayImport } from './routes/_authenticated/settings/display'
 import { Route as AuthenticatedSettingsAppearanceImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedSettingsAccountImport } from './routes/_authenticated/settings/account'
+import { Route as AuthenticatedReportsYearlyIndexImport } from './routes/_authenticated/reports/yearly/index'
+import { Route as AuthenticatedReportsMonthlyIndexImport } from './routes/_authenticated/reports/monthly/index'
+import { Route as AuthenticatedReportsCustomIndexImport } from './routes/_authenticated/reports/custom/index'
 
 // Create/Update Routes
 
@@ -134,12 +140,32 @@ const AuthenticatedSettingsIndexRoute = AuthenticatedSettingsIndexImport.update(
   } as any,
 )
 
+const AuthenticatedRecentBudgetsIndexRoute =
+  AuthenticatedRecentBudgetsIndexImport.update({
+    id: '/recent-budgets/',
+    path: '/recent-budgets/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
 const AuthenticatedHelpCenterIndexRoute =
   AuthenticatedHelpCenterIndexImport.update({
     id: '/help-center/',
     path: '/help-center/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+
+const AuthenticatedCategoriesIndexRoute =
+  AuthenticatedCategoriesIndexImport.update({
+    id: '/categories/',
+    path: '/categories/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
+const AuthenticatedBudgetsIndexRoute = AuthenticatedBudgetsIndexImport.update({
+  id: '/budgets/',
+  path: '/budgets/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 const AuthenticatedSettingsNotificationsRoute =
   AuthenticatedSettingsNotificationsImport.update({
@@ -167,6 +193,27 @@ const AuthenticatedSettingsAccountRoute =
     id: '/account',
     path: '/account',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
+  } as any)
+
+const AuthenticatedReportsYearlyIndexRoute =
+  AuthenticatedReportsYearlyIndexImport.update({
+    id: '/reports/yearly/',
+    path: '/reports/yearly/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
+const AuthenticatedReportsMonthlyIndexRoute =
+  AuthenticatedReportsMonthlyIndexImport.update({
+    id: '/reports/monthly/',
+    path: '/reports/monthly/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+
+const AuthenticatedReportsCustomIndexRoute =
+  AuthenticatedReportsCustomIndexImport.update({
+    id: '/reports/custom/',
+    path: '/reports/custom/',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -299,11 +346,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsNotificationsImport
       parentRoute: typeof AuthenticatedSettingsRouteImport
     }
+    '/_authenticated/budgets/': {
+      id: '/_authenticated/budgets/'
+      path: '/budgets'
+      fullPath: '/budgets'
+      preLoaderRoute: typeof AuthenticatedBudgetsIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/categories/': {
+      id: '/_authenticated/categories/'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof AuthenticatedCategoriesIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
     '/_authenticated/help-center/': {
       id: '/_authenticated/help-center/'
       path: '/help-center'
       fullPath: '/help-center'
       preLoaderRoute: typeof AuthenticatedHelpCenterIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/recent-budgets/': {
+      id: '/_authenticated/recent-budgets/'
+      path: '/recent-budgets'
+      fullPath: '/recent-budgets'
+      preLoaderRoute: typeof AuthenticatedRecentBudgetsIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/settings/': {
@@ -318,6 +386,27 @@ declare module '@tanstack/react-router' {
       path: '/tasks'
       fullPath: '/tasks'
       preLoaderRoute: typeof AuthenticatedTasksIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/reports/custom/': {
+      id: '/_authenticated/reports/custom/'
+      path: '/reports/custom'
+      fullPath: '/reports/custom'
+      preLoaderRoute: typeof AuthenticatedReportsCustomIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/reports/monthly/': {
+      id: '/_authenticated/reports/monthly/'
+      path: '/reports/monthly'
+      fullPath: '/reports/monthly'
+      preLoaderRoute: typeof AuthenticatedReportsMonthlyIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/reports/yearly/': {
+      id: '/_authenticated/reports/yearly/'
+      path: '/reports/yearly'
+      fullPath: '/reports/yearly'
+      preLoaderRoute: typeof AuthenticatedReportsYearlyIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
   }
@@ -351,15 +440,27 @@ const AuthenticatedSettingsRouteRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedBudgetsIndexRoute: typeof AuthenticatedBudgetsIndexRoute
+  AuthenticatedCategoriesIndexRoute: typeof AuthenticatedCategoriesIndexRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
+  AuthenticatedRecentBudgetsIndexRoute: typeof AuthenticatedRecentBudgetsIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
+  AuthenticatedReportsCustomIndexRoute: typeof AuthenticatedReportsCustomIndexRoute
+  AuthenticatedReportsMonthlyIndexRoute: typeof AuthenticatedReportsMonthlyIndexRoute
+  AuthenticatedReportsYearlyIndexRoute: typeof AuthenticatedReportsYearlyIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedBudgetsIndexRoute: AuthenticatedBudgetsIndexRoute,
+  AuthenticatedCategoriesIndexRoute: AuthenticatedCategoriesIndexRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
+  AuthenticatedRecentBudgetsIndexRoute: AuthenticatedRecentBudgetsIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
+  AuthenticatedReportsCustomIndexRoute: AuthenticatedReportsCustomIndexRoute,
+  AuthenticatedReportsMonthlyIndexRoute: AuthenticatedReportsMonthlyIndexRoute,
+  AuthenticatedReportsYearlyIndexRoute: AuthenticatedReportsYearlyIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -384,9 +485,15 @@ export interface FileRoutesByFullPath {
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/budgets': typeof AuthenticatedBudgetsIndexRoute
+  '/categories': typeof AuthenticatedCategoriesIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
+  '/recent-budgets': typeof AuthenticatedRecentBudgetsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
+  '/reports/custom': typeof AuthenticatedReportsCustomIndexRoute
+  '/reports/monthly': typeof AuthenticatedReportsMonthlyIndexRoute
+  '/reports/yearly': typeof AuthenticatedReportsYearlyIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -406,9 +513,15 @@ export interface FileRoutesByTo {
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/budgets': typeof AuthenticatedBudgetsIndexRoute
+  '/categories': typeof AuthenticatedCategoriesIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
+  '/recent-budgets': typeof AuthenticatedRecentBudgetsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
+  '/reports/custom': typeof AuthenticatedReportsCustomIndexRoute
+  '/reports/monthly': typeof AuthenticatedReportsMonthlyIndexRoute
+  '/reports/yearly': typeof AuthenticatedReportsYearlyIndexRoute
 }
 
 export interface FileRoutesById {
@@ -431,9 +544,15 @@ export interface FileRoutesById {
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
+  '/_authenticated/budgets/': typeof AuthenticatedBudgetsIndexRoute
+  '/_authenticated/categories/': typeof AuthenticatedCategoriesIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
+  '/_authenticated/recent-budgets/': typeof AuthenticatedRecentBudgetsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
+  '/_authenticated/reports/custom/': typeof AuthenticatedReportsCustomIndexRoute
+  '/_authenticated/reports/monthly/': typeof AuthenticatedReportsMonthlyIndexRoute
+  '/_authenticated/reports/yearly/': typeof AuthenticatedReportsYearlyIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -457,9 +576,15 @@ export interface FileRouteTypes {
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
+    | '/budgets'
+    | '/categories'
     | '/help-center'
+    | '/recent-budgets'
     | '/settings/'
     | '/tasks'
+    | '/reports/custom'
+    | '/reports/monthly'
+    | '/reports/yearly'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/login'
@@ -478,9 +603,15 @@ export interface FileRouteTypes {
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
+    | '/budgets'
+    | '/categories'
     | '/help-center'
+    | '/recent-budgets'
     | '/settings'
     | '/tasks'
+    | '/reports/custom'
+    | '/reports/monthly'
+    | '/reports/yearly'
   id:
     | '__root__'
     | '/_authenticated'
@@ -501,9 +632,15 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/appearance'
     | '/_authenticated/settings/display'
     | '/_authenticated/settings/notifications'
+    | '/_authenticated/budgets/'
+    | '/_authenticated/categories/'
     | '/_authenticated/help-center/'
+    | '/_authenticated/recent-budgets/'
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
+    | '/_authenticated/reports/custom/'
+    | '/_authenticated/reports/monthly/'
+    | '/_authenticated/reports/yearly/'
   fileRoutesById: FileRoutesById
 }
 
@@ -566,8 +703,14 @@ export const routeTree = rootRoute
       "children": [
         "/_authenticated/settings",
         "/_authenticated/",
+        "/_authenticated/budgets/",
+        "/_authenticated/categories/",
         "/_authenticated/help-center/",
-        "/_authenticated/tasks/"
+        "/_authenticated/recent-budgets/",
+        "/_authenticated/tasks/",
+        "/_authenticated/reports/custom/",
+        "/_authenticated/reports/monthly/",
+        "/_authenticated/reports/yearly/"
       ]
     },
     "/login": {
@@ -634,8 +777,20 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/settings/notifications.tsx",
       "parent": "/_authenticated/settings"
     },
+    "/_authenticated/budgets/": {
+      "filePath": "_authenticated/budgets/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/categories/": {
+      "filePath": "_authenticated/categories/index.tsx",
+      "parent": "/_authenticated"
+    },
     "/_authenticated/help-center/": {
       "filePath": "_authenticated/help-center/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/recent-budgets/": {
+      "filePath": "_authenticated/recent-budgets/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/settings/": {
@@ -644,6 +799,18 @@ export const routeTree = rootRoute
     },
     "/_authenticated/tasks/": {
       "filePath": "_authenticated/tasks/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/reports/custom/": {
+      "filePath": "_authenticated/reports/custom/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/reports/monthly/": {
+      "filePath": "_authenticated/reports/monthly/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/reports/yearly/": {
+      "filePath": "_authenticated/reports/yearly/index.tsx",
       "parent": "/_authenticated"
     }
   }

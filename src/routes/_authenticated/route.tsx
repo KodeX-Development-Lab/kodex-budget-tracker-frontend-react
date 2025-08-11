@@ -1,11 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect } from 'react'
 import Cookies from 'js-cookie'
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  useNavigate,
+} from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
 import { SearchProvider } from '@/context/search-context'
+import { FullPageSpinner } from '@/components/ui/fullpage-spinner'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import SkipToMain from '@/components/skip-to-main'
+import { useAuth } from '@/features/auth/context/auth-context'
+
+export function RequireAuth({ children }: { children: React.ReactNode }) {
+  const { user, token, loading } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!loading && (!token || !user)) {
+      navigate({ to: '/sign-in' })
+    }
+  }, [loading, token, user, navigate])
+
+  if (loading) return <FullPageSpinner /> // You can replace with a spinner
+
+  return <>{children}</>
+}
 
 export const Route = createFileRoute('/_authenticated')({
   // beforeLoad: async ({ context: { auth } }: any) => {
@@ -18,7 +41,11 @@ export const Route = createFileRoute('/_authenticated')({
   //   // If authenticated, allow the route to continue
   //   return { auth }
   // },
-  component: RouteComponent,
+  component: () => (
+    <RequireAuth>
+      <RouteComponent />
+    </RequireAuth>
+  ),
 })
 
 function RouteComponent() {

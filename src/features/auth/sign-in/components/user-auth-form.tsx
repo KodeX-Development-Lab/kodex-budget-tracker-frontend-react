@@ -2,10 +2,14 @@ import { HTMLAttributes, useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from '@tanstack/react-router'
-import { IconBrandFacebook, IconBrandGithub } from '@tabler/icons-react'
+import { Link, useNavigate } from '@tanstack/react-router'
+import {
+  IconBrandFacebook,
+  IconBrandGithub,
+  IconBrandGoogle,
+} from '@tabler/icons-react'
+import axiosClient from '@/lib/axios-client'
 import { cn } from '@/lib/utils'
-import { useAuth } from '@/context/auth-context'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -17,42 +21,56 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
+import { useAuth } from '@/features/auth/context/auth-context'
+import {
+  LoginSchema,
+  LoginSchemaType,
+  RegisterUserSchema,
+  RegisterUserSchemaType,
+} from '../../data/schema'
+import { toast } from 'sonner'
 
 type UserAuthFormProps = HTMLAttributes<HTMLFormElement>
-
-const formSchema = z.object({
-  email: z
-    .string()
-    .min(1, { message: 'Please enter your email' })
-    .email({ message: 'Invalid email address' }),
-  password: z
-    .string()
-    .min(1, {
-      message: 'Please enter your password',
-    })
-    .min(7, {
-      message: 'Password must be at least 7 characters long',
-    }),
-})
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const { login } = useAuth()
+  const navigate = useNavigate()
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<LoginSchemaType>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: '',
       password: '',
     },
   })
 
-  function onSubmit({ email, password }: z.infer<typeof formSchema>) {
+  async function onSubmit(data: LoginSchemaType) {
     setIsLoading(true)
-    login(email, password)
-    setTimeout(() => {
+    try {
+      const res = await axiosClient.post('/auth/login', data)
+
+      const { user, accessToken } = res.data.data
+      login(user, accessToken)
+
+      form.reset()
+      navigate({ to: '/' })
+    } catch (error: any) {
+      const apiErrors = error.response?.data
+
+      if (apiErrors?.errors) {
+        Object.entries(apiErrors.errors).forEach(([field, messages]) => {
+          form.setError(field as keyof LoginSchemaType, {
+            type: 'server',
+            message: (messages as string[])[0],
+          })
+        })
+      } else if (apiErrors?.message) {
+        toast.error(apiErrors.message)
+      }
+    } finally {
       setIsLoading(false)
-    }, 1000)
+    }
   }
 
   return (
@@ -109,14 +127,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </div>
         </div>
 
-        <div className='grid grid-cols-2 gap-2'>
+        {/* <div className='grid grid-cols-1'>
           <Button variant='outline' type='button' disabled={isLoading}>
-            <IconBrandGithub className='h-4 w-4' /> GitHub
+            <IconBrandGoogle className='h-4 w-4' /> Google
           </Button>
-          <Button variant='outline' type='button' disabled={isLoading}>
-            <IconBrandFacebook className='h-4 w-4' /> Facebook
-          </Button>
-        </div>
+        </div> */}
       </form>
     </Form>
   )

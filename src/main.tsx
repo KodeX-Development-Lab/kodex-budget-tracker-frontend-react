@@ -12,7 +12,7 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/authStore'
 import { handleServerError } from '@/utils/handle-server-error'
-import { AuthProvider, useAuth } from './context/auth-context'
+import { AuthProvider, useAuth } from './features/auth/context/auth-context'
 import { FontProvider } from './context/font-context'
 import { ThemeProvider } from './context/theme-context'
 import './index.css'
@@ -106,7 +106,7 @@ function InnerApp() {
 
 // Render the app
 const rootElement = document.getElementById('root')!
-if (!rootElement.innerHTML) {
+// if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
@@ -121,4 +121,4 @@ if (!rootElement.innerHTML) {
       </QueryClientProvider>
     </StrictMode>
   )
-}
+// }
