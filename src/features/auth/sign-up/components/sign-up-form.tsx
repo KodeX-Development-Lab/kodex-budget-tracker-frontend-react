@@ -63,7 +63,7 @@ export function SignUpForm({ className, ...props }: SignUpFormProps) {
           })
         }
       } else {
-        toast.success(error.data?.message ?? "Error")
+        toast.error(error.data?.message ?? "Error")
       }
     } finally {
       setIsLoading(false)

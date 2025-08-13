@@ -19,3 +19,10 @@ export function mapToLabelValue<T extends { id: number; name: string }>(
 export function getAccessToken() {
   return localStorage.getItem('accessToken')
 }
+
+export function formatMoney(amount: number) {
+  return new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(amount)
+}

@@ -14,6 +14,7 @@ import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import SkipToMain from '@/components/skip-to-main'
 import { useAuth } from '@/features/auth/context/auth-context'
+import BudgetContextProvider from '@/features/budgets/context/budget-context'
 
 export function RequireAuth({ children }: { children: React.ReactNode }) {
   const { user, token, loading } = useAuth()
@@ -52,24 +53,26 @@ function RouteComponent() {
   const defaultOpen = Cookies.get('sidebar_state') !== 'false'
   return (
     <SearchProvider>
-      <SidebarProvider defaultOpen={defaultOpen}>
-        <SkipToMain />
-        <AppSidebar />
-        <div
-          id='content'
-          className={cn(
-            'ml-auto w-full max-w-full',
-            'peer-data-[state=collapsed]:w-[calc(100%-var(--sidebar-width-icon)-1rem)]',
-            'peer-data-[state=expanded]:w-[calc(100%-var(--sidebar-width))]',
-            'sm:transition-[width] sm:duration-200 sm:ease-linear',
-            'flex h-svh flex-col',
-            'group-data-[scroll-locked=1]/body:h-full',
-            'has-[main.fixed-main]:group-data-[scroll-locked=1]/body:h-svh'
-          )}
-        >
-          <Outlet />
-        </div>
-      </SidebarProvider>
+      <BudgetContextProvider>
+        <SidebarProvider defaultOpen={defaultOpen}>
+          <SkipToMain />
+          <AppSidebar />
+          <div
+            id='content'
+            className={cn(
+              'ml-auto w-full max-w-full',
+              'peer-data-[state=collapsed]:w-[calc(100%-var(--sidebar-width-icon)-1rem)]',
+              'peer-data-[state=expanded]:w-[calc(100%-var(--sidebar-width))]',
+              'sm:transition-[width] sm:duration-200 sm:ease-linear',
+              'flex h-svh flex-col',
+              'group-data-[scroll-locked=1]/body:h-full',
+              'has-[main.fixed-main]:group-data-[scroll-locked=1]/body:h-svh'
+            )}
+          >
+            <Outlet />
+          </div>
+        </SidebarProvider>
+      </BudgetContextProvider>
     </SearchProvider>
   )
 }

@@ -1,6 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { ArrowRight } from 'lucide-react'
+import moment from 'moment'
 import { fetchOverviewDashboardData } from '@/lib/budget-fetcher'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,18 +11,40 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { FullPageSpinner } from '@/components/ui/fullpage-spinner'
 import { Tabs, TabsContent } from '@/components/ui/tabs'
-import { BudgetCard } from '@/components/budget/budget-card'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { ThemeSwitch } from '@/components/theme-switch'
+import { BudgetCard } from '@/features/budgets/components/budget-card'
+import { deleteBudgetItem } from '../budgets/api/mutations/mutation'
+import { BudgetBrief } from '../budgets/components/budget-brief'
+import { recentBudgetsQueryKey } from './api/key'
+import { fetchCurrentMonthBudgets } from './api/queries/query'
 
 export default function RecentBudgets() {
-  // const { data } = useQuery({
-  //   queryKey: ['overviewDashboard'],
-  //   queryFn: fetchOverviewDashboardData,
-  // })
+  const queryClient = useQueryClient()
+
+  const { data, isLoading } = useQuery({
+    queryKey: [recentBudgetsQueryKey],
+    queryFn: fetchCurrentMonthBudgets,
+  })
+
+  const deleteBudget = useMutation({
+    mutationFn: deleteBudgetItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [recentBudgetsQueryKey] })
+    },
+  })
+
+  function handleDelete(id: string | number) {
+    deleteBudget.mutate(id)
+  }
+
+  if (isLoading) {
+    return <FullPageSpinner />
+  }
 
   return (
     <>
@@ -35,97 +58,23 @@ export default function RecentBudgets() {
 
       {/* ===== Main ===== */}
       <Main>
-        <Tabs
-          orientation='vertical'
-          defaultValue='overview'
-          className='space-y-4'
-        >
-          <div className='w-full overflow-x-auto pb-2'></div>
-          <TabsContent value='overview' className='space-y-4'>
-            <h1>July, 2025</h1>
-            <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-              <Card>
-                <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>
-                    Total Income
-                  </CardTitle>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    className='text-muted-foreground h-4 w-4'
-                  >
-                    <path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className='text-2xl font-bold'>$ 10000</div>
-                  {/* <p className='text-muted-foreground text-xs'>
-                    +20.1% from last month
-                  </p> */}
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>
-                    Total Expense
-                  </CardTitle>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    className='text-muted-foreground h-4 w-4'
-                  >
-                    <path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className='text-2xl font-bold'>$ 0</div>
-                  {/* <p className='text-muted-foreground text-xs'>
-                    +20.1% from last month
-                  </p> */}
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                  <CardTitle className='text-sm font-medium'>Balance</CardTitle>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='currentColor'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    className='text-muted-foreground h-4 w-4'
-                  >
-                    <path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className='text-2xl font-bold'>$ 1000</div>
-                  {/* <p className='text-muted-foreground text-xs'>
-                    +20.1% from last month
-                  </p> */}
-                </CardContent>
-              </Card>
-            </div>
-            <div className='space-y-2'>
-              <BudgetCard />
-              <BudgetCard />
-              <BudgetCard />
-              <BudgetCard />
-            </div>
-          </TabsContent>
-        </Tabs>
+        <div>
+          <h1 className='font-bold'>{moment().format('MMM YYYY')}</h1>
+        </div>
+        <div>
+          <BudgetBrief budgetBrief={data?.brief} />
+        </div>
+        <div className='mt-5'>
+          {data?.daily_budgets
+            .filter((daily_budget) => daily_budget.items.length)
+            .map((daily_budget) => (
+              <BudgetCard
+                key={daily_budget.id}
+                daily_budget={daily_budget}
+                onDelete={handleDelete}
+              />
+            ))}
+        </div>
       </Main>
     </>
   )

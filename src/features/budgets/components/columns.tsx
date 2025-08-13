@@ -16,22 +16,10 @@ import { labels, priorities, statuses } from '../data/data'
 import { Task } from '../data/schema'
 import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
+import { BudgetItem } from '../types/budget-types'
 
-export type BudgetCategory = {
-  id: number | string
-  name: string
-}
 
-export type Budget = {
-  id: number | string
-  type: 'income' | 'expense'
-  amount: number
-  remark: string | null
-  processed_at: string
-  category: BudgetCategory
-}
-
-export const columns: ColumnDef<Budget>[] = [
+export const columns: ColumnDef<BudgetItem>[] = [
   {
     accessorKey: 'processed_at',
     header: ({ column }) => (
@@ -42,7 +30,7 @@ export const columns: ColumnDef<Budget>[] = [
         {moment(row.getValue('processed_at')).format('MM-DD-YYYY h:mm A')}
       </div>
     ),
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: false,
   },
   {

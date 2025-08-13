@@ -57,6 +57,8 @@
   --pos-cash: oklch(0.68 0.2 120); /* Mint green */
   --pos-card: var(--primary);
   --pos-discount: oklch(0.72 0.25 25); /* Punchy pink-orange */
+  --income: #08fa08;
+  --expense: #fa0808;
 }
 
 .dark {
