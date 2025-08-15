@@ -2,11 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useQueryClient } from '@tanstack/react-query'
-import { CalendarIcon } from 'lucide-react'
-import moment from 'moment'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
 import {
   Dialog,
   DialogClose,
@@ -28,29 +25,24 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
-import { DateTimePickerField } from '@/components/form-fields/date-time-picker-field'
-import { allBudgetsQueryKey } from '../api/key'
+import LucideIconByName from '@/components/lucideiconbyname'
 import {
-  useSaveBudgetItem,
-  useUpdateBudgetItem,
-} from '../api/mutations/mutation'
-import { useBudgetContext } from '../context/budget-context'
-import { BudgetFormSchema, BudgetFormSchemaType } from '../data/schema'
-import { BudgetItem, TransactionTypes } from '../types/budget-types'
+  CategoryType,
+  IconType,
+  TransactionTypes,
+} from '@/features/budgets/types/budget-types'
+import { CategoriesByParamsQueryKey } from '../api/key'
+import { useSaveCategory, useUpdateCategory } from '../api/mutations/mutation'
+import { useCategoryContext } from '../context/CategoryContext'
+import { CategoryFormSchema, CategoryFormSchemaType } from '../data/schema'
 
-export function BudgetAddDialog({
+export function CategoryFormDialog({
   mode,
   open,
   onOpenChange,
@@ -59,51 +51,55 @@ export function BudgetAddDialog({
   mode: 'create' | 'edit'
   open: boolean
   onOpenChange: (open: boolean) => void
-  initialData: BudgetItem | null
+  initialData: CategoryType | null
 }) {
   const queryClient = useQueryClient()
-  const { categories: allCategories } = useBudgetContext()
-  const budgetSaveMutation = useSaveBudgetItem()
-  const budgetUpdateMutation = useUpdateBudgetItem()
+  const { icons } = useCategoryContext()
+  const categorySaveMutation = useSaveCategory()
+  const categoryUpdateMutation = useUpdateCategory()
+  const [selectedIcon, setSelectedIcon] = useState<IconType | null>()
 
-  const form = useForm<BudgetFormSchemaType>({
-    resolver: zodResolver(BudgetFormSchema),
+  useMemo(() => {
+    if (initialData && initialData.icon) {
+      setSelectedIcon(initialData.icon)
+    }
+  }, [initialData])
+
+  const form = useForm<CategoryFormSchemaType>({
+    resolver: zodResolver(CategoryFormSchema),
     defaultValues: {
       type: TransactionTypes.INCOME,
-      category_id: 0,
-      processed_at: new Date(),
-      amount: 0,
-      remark: '',
+      name: '',
+      icon_id: 0,
+      color: '',
     },
   })
+
 
   useEffect(() => {
     if (initialData && mode === 'edit') {
       form.reset({
-        ...initialData,
-        processed_at: new Date(initialData.processed_at)
+        type: initialData.type,
+        icon_id: initialData.icon.id,
+        name: initialData.name,
+        color: initialData.color,
       })
     } else if (mode === 'create') {
+      setSelectedIcon(null);
       form.reset({
         type: TransactionTypes.INCOME,
-        category_id: 0,
-        processed_at: new Date(),
-        amount: 0,
-        remark: '',
+        icon_id: 0,
+        name: '',
+        color: '#000000',
       })
     }
   }, [initialData, mode, form])
-
-  const typeValue = form.watch('type')
-  const selectCategories = useMemo(() => {
-    return allCategories.filter((cat) => cat.type == typeValue)
-  }, [typeValue, allCategories])
 
   const handleBackendErrors = (error: any) => {
     const backendErrors = error?.response?.data?.errors
     if (backendErrors) {
       Object.entries(backendErrors).forEach(([field, messages]) => {
-        form.setError(field as keyof BudgetFormSchemaType, {
+        form.setError(field as keyof CategoryFormSchemaType, {
           type: 'server',
           message: (messages as string[])[0],
         })
@@ -113,30 +109,52 @@ export function BudgetAddDialog({
     }
   }
 
-  const handleSubmit = async (payload: BudgetFormSchemaType) => {
+  const handleSubmit = async (payload: CategoryFormSchemaType) => {
     if (mode == 'create') {
-      budgetSaveMutation.mutate(payload, {
+      categorySaveMutation.mutate(payload, {
         onError: handleBackendErrors,
         onSuccess: (res) => {
           toast.success(res?.data?.message)
           form.reset()
+          setSelectedIcon(null)
           onOpenChange(false)
-          queryClient.invalidateQueries({ queryKey: [allBudgetsQueryKey] })
+          queryClient.invalidateQueries({
+            queryKey: [CategoriesByParamsQueryKey],
+          })
         },
       })
     } else if (initialData && mode == 'edit') {
-      budgetUpdateMutation.mutate(
+      categoryUpdateMutation.mutate(
         { id: initialData.id, payload },
         {
           onError: handleBackendErrors,
           onSuccess: (res) => {
             toast.success(res?.data?.message)
             form.reset()
+            setSelectedIcon(null)
             onOpenChange(false)
-            queryClient.invalidateQueries({ queryKey: [allBudgetsQueryKey] })
+            queryClient.invalidateQueries({
+              queryKey: [CategoriesByParamsQueryKey],
+            })
           },
         }
       )
+    }
+  }
+
+  const colorValue = form.watch('color')
+
+  const getIconStyle = (icon: IconType) => {
+    if (selectedIcon && selectedIcon.id == icon.id && colorValue) {
+      return {
+        backgroundColor: colorValue,
+        color: '#fff',
+      }
+    } else if (selectedIcon && selectedIcon.id == icon.id && !colorValue) {
+      return {
+        backgroundColor: '#ccc',
+        color: '#fff',
+      }
     }
   }
 
@@ -148,7 +166,7 @@ export function BudgetAddDialog({
             <DialogHeader>
               <DialogTitle>{mode == 'create' ? 'New' : 'Edit'}</DialogTitle>
               <DialogDescription>
-                {mode == 'create' ? 'New' : 'Edit'} income or expense record.
+                {mode == 'create' ? 'New' : 'Edit'} Category
               </DialogDescription>
             </DialogHeader>
             <div className='grid gap-4'>
@@ -180,47 +198,12 @@ export function BudgetAddDialog({
                   </FormItem>
                 )}
               />
-              {/* Category Select */}
               <FormField
                 control={form.control}
-                name='category_id'
+                name='name'
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Category</FormLabel>
-                    <Select
-                      onValueChange={(val) => field.onChange(Number(val))}
-                      defaultValue={String(field.value)}
-                    >
-                      <FormControl>
-                        <SelectTrigger className='w-full'>
-                          <SelectValue placeholder='Select category' />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {selectCategories.map((cat) => (
-                          <SelectItem key={cat.id} value={String(cat.id)}>
-                            {cat.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <DateTimePickerField
-                name='processed_at'
-                label='Date'
-                placeholder='Select Date'
-              />
-
-              <FormField
-                control={form.control}
-                name='amount'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Amount</FormLabel>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input placeholder='' {...field} />
                     </FormControl>
@@ -228,23 +211,53 @@ export function BudgetAddDialog({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name='remark'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Remark</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        {...field}
-                        value={field.value ?? ''}
-                        placeholder=''
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {selectedIcon && form.getValues('color') && (
+                <div>
+                  <FormLabel>Symbol Preview</FormLabel>
+                  <div
+                    className='mt-3 flex h-12 w-12 items-center justify-center rounded-full p-3'
+                    style={{ backgroundColor: form.getValues('color') }}
+                  >
+                    <span className='flex items-center justify-center text-xl text-white'>
+                      <LucideIconByName name={selectedIcon?.name} />
+                    </span>
+                  </div>
+                </div>
+              )}
+              <div>
+                <FormLabel>Color</FormLabel>
+                <input
+                  type='color'
+                  {...form.register('color')}
+                  // value={form.getValues('color')}
+                  // onChange={(event) =>
+                  //   form.setValue('color', event.target.value)
+                  // }
+                />
+              </div>
+              <div>
+                <FormLabel>Icon</FormLabel>
+                <div
+                  className='grid grid-cols-5 gap-3 overflow-y-auto'
+                  style={{ height: '100px' }} // Fixed height
+                >
+                  {icons?.map((icon) => (
+                    <div
+                      key={icon.id}
+                      onClick={() => {
+                        setSelectedIcon(icon)
+                        form.setValue('icon_id', icon.id)
+                      }}
+                      className={`flex cursor-pointer flex-col items-center rounded p-2 transition-colors hover:bg-gray-50`}
+                      style={getIconStyle(form.getValues('color'), icon)}
+                    >
+                      <div className='mb-1 text-2xl'>
+                        <LucideIconByName name={icon?.name} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
             <DialogFooter>
               <DialogClose asChild>

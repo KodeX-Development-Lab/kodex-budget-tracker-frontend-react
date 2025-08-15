@@ -24,7 +24,7 @@ export const BudgetCard = ({
             {formatMoney(daily_budget.total_income)}
           </span>{' '}
           &nbsp; expense:{' '}
-          <span className='text-[var(--income)]'>
+          <span className='text-[var(--expense)]'>
             {formatMoney(daily_budget.total_expense)}
           </span>
         </span>

@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Link, useParams } from '@tanstack/react-router'
-import { Route } from '@/routes/_authenticated/budgets'
+import { Route } from '@/routes/_authenticated/categories'
 import { Plus } from 'lucide-react'
 import { toast } from 'sonner'
 import { PaginationInfo } from '@/lib/types'
@@ -14,40 +13,35 @@ import {
   CardContent,
   CardTitle,
 } from '@/components/ui/card'
-import { FullPageSpinner } from '@/components/ui/fullpage-spinner'
 import PaginationComponent from '@/components/PaginationComponent'
 import TableLoadingSkeleton from '@/components/TableLoadingSkeleton'
 import { DeleteConfirmDialog } from '@/components/dialog/DeletePopUp'
-import { allBudgetsQueryKey } from '../api/key'
-import { useDeleteBudgetItem } from '../api/mutations/mutation'
-import { useBudgetList } from '../api/queries/query'
-import { BudgetAddDialog } from '../components/BudgetAddDialog'
-import { BudgetBrief } from '../components/budget-brief'
-import BudgetDataTable from '../components/table/BudgetDataTable'
-import { columns as getColumns } from '../components/table/BudgetTableColumns'
-import BudgetTableFilter from '../components/table/BudgetTableFilter'
-import { useBudgetContext } from '../context/budget-context'
 import {
-  BudgetItem,
+  CategoryType,
   isTransactionType,
-  transactionTypeOptions,
   TransactionTypes,
-} from '../types/budget-types'
+  transactionTypeOptions
+} from '@/features/budgets/types/budget-types'
+import { CategoriesByParamsQueryKey } from '../api/key'
+import { useDeleteCategory } from '../api/mutations/mutation'
+import { useCategoriesByParams } from '../api/queries/query'
+import { CategoryFormDialog } from '../components/CategoryFormDialog'
+import CategoryDataTable from '../components/table/CategoryDataTable'
+import { columns as getColumns } from '../components/table/CategoryTableColumns'
 import { SingleSelectDropdown } from '@/components/form-fields/SingleSelectDropdown'
 
-const BudgetTable = () => {
+const CategoryTable = () => {
   const queryClient = useQueryClient()
   const searchParams = Route.useSearch()
   const navigate = Route.useNavigate()
-  const { isLoading: budgetContextLoading } = useBudgetContext()
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [selectedId, setSelectedId] = useState<number | string | null>(null)
-  const [selectedItem, setSelectedItem] = useState<BudgetItem | null>(null)
+  const [selectedItem, setSelectedItem] = useState<CategoryType | null>(null)
 
   const [openAddNewDialog, setOpenAddNewDialog] = useState(false)
-  const [budgetDialogMode, setBudgetDialogMode] = useState<'create' | 'edit'>(
-    'create'
-  )
+  const [categoryDialogMode, setCategoryDialogMode] = useState<
+    'create' | 'edit'
+  >('create')
 
   // Search & Filter
   const [type, setType] = useState<string | number>(TransactionTypes.ALL)
@@ -72,27 +66,22 @@ const BudgetTable = () => {
     })
   }
 
-  const { data, isLoading: budgetDataLoading } = useBudgetList(params)
-
-  const budgets = useMemo(() => {
-    if (!data?.budgets?.data) return []
-    return data.budgets
-  }, [data])
+  const { data, isLoading } = useCategoriesByParams(params)
 
   const responsePaginationInfo: PaginationInfo = useMemo(
     () => ({
-      current_page: data?.budgets?.current_page || 1,
-      first_page_url: data?.budgets?.first_page_url || null,
-      from: data?.budgets?.from || 0,
-      last_page: data?.budgets?.last_page || 1,
-      last_page_url: data?.budgets?.last_page_url || null,
-      links: data?.budgets?.links || [],
-      next_page_url: data?.budgets?.next_page_url || null,
-      path: data?.budgets?.path || null,
-      per_page: data?.budgets?.per_page || 10,
-      prev_page_url: data?.budgets?.prev_page_url || null,
-      to: data?.budgets?.to || 0,
-      total: data?.budgets?.total || 0,
+      current_page: data?.categories?.current_page || 1,
+      first_page_url: data?.categories?.first_page_url || null,
+      from: data?.categories?.from || 0,
+      last_page: data?.categories?.last_page || 1,
+      last_page_url: data?.categories?.last_page_url || null,
+      links: data?.categories?.links || [],
+      next_page_url: data?.categories?.next_page_url || null,
+      path: data?.categories?.path || null,
+      per_page: data?.categories?.per_page || 10,
+      prev_page_url: data?.categories?.prev_page_url || null,
+      to: data?.categories?.to || 0,
+      total: data?.categories?.total || 0,
     }),
     [data]
   )
@@ -100,10 +89,10 @@ const BudgetTable = () => {
   const { paginationInfo, goToPage, prevPage, nextPage, changePageSize } =
     usePagination(Route, responsePaginationInfo)
 
-  const handleEditClick = useCallback((item: BudgetItem) => {
+  const handleEditClick = useCallback((item: CategoryType) => {
     setSelectedItem(item)
-    setBudgetDialogMode('edit')
     setOpenAddNewDialog(true)
+    setCategoryDialogMode('edit')
   }, [])
 
   const handleDeleteClick = useCallback((id: string | number) => {
@@ -111,31 +100,32 @@ const BudgetTable = () => {
     setIsDeleteDialogOpen(true)
   }, [])
 
-  const budgetDeleteMutation = useDeleteBudgetItem()
+  const categoryDeleteMutation = useDeleteCategory()
   const confirmSingleDelete = useCallback(() => {
     if (!selectedId) return
-    budgetDeleteMutation.mutate(selectedId, {
+    categoryDeleteMutation.mutate(selectedId, {
       onSuccess: () => {
         setIsDeleteDialogOpen(false)
         setSelectedId(null)
         toast.success('deleted')
-        queryClient.invalidateQueries({ queryKey: [allBudgetsQueryKey] })
+        queryClient.invalidateQueries({
+          queryKey: [CategoriesByParamsQueryKey],
+        })
       },
     })
-  }, [selectedId, budgetDeleteMutation])
+  }, [selectedId, categoryDeleteMutation])
 
   const columnData = useMemo(
     () => getColumns(handleEditClick, handleDeleteClick),
     [handleEditClick, handleDeleteClick]
   )
 
-  if (budgetContextLoading) return <FullPageSpinner />
-  if (budgetDataLoading) return <TableLoadingSkeleton />
+  if (isLoading) return <TableLoadingSkeleton />
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className='font-bold'>Budget List</CardTitle>
+        <CardTitle className='font-bold'>Categories</CardTitle>
         <CardAction>
           <div className='flex gap-1'>
             <Button
@@ -143,7 +133,7 @@ const BudgetTable = () => {
               onClick={() => {
                 setSelectedId(null)
                 setSelectedItem(null)
-                setBudgetDialogMode('create')
+                setCategoryDialogMode('create')
                 setOpenAddNewDialog(true)
               }}
             >
@@ -152,8 +142,8 @@ const BudgetTable = () => {
           </div>
         </CardAction>
       </CardHeader>
-      <BudgetAddDialog
-        mode={budgetDialogMode}
+      <CategoryFormDialog
+        mode={categoryDialogMode}
         open={openAddNewDialog}
         onOpenChange={setOpenAddNewDialog}
         initialData={selectedItem}
@@ -164,7 +154,7 @@ const BudgetTable = () => {
           onOpenChange={() => setIsDeleteDialogOpen(false)}
           // onClose={() => setIsDeleteDialogOpen(false)}
           onConfirm={confirmSingleDelete}
-          isLoading={budgetDeleteMutation.isPending}
+          isLoading={categoryDeleteMutation.isPending}
         />
         <div className='my-5'>
           <SingleSelectDropdown
@@ -175,10 +165,7 @@ const BudgetTable = () => {
             className='w-[200px]'
           />
         </div>
-        <div className='mb-4'>
-          <BudgetBrief budgetBrief={data.brief} />
-        </div>
-        <BudgetDataTable columns={columnData} data={data?.budgets?.data} />
+        <CategoryDataTable columns={columnData} data={data?.categories?.data} />
         <div className='mt-[20px]'>
           <PaginationComponent
             paginationInfo={paginationInfo}
@@ -193,4 +180,4 @@ const BudgetTable = () => {
   )
 }
 
-export default BudgetTable
+export default CategoryTable

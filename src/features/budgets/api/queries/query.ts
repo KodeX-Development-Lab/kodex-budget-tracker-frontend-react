@@ -6,9 +6,10 @@ import { allBudgetsQueryKey } from '../key'
 const staleTime = 2 * 60 * 1000
 
 type BudgetListParams = {
-  page?: string
-  per_page?: string
+  page?: string | number
+  per_page?: string | number
   search?: string | null
+  type?: TransactionType | null
 }
 
 const fetchAllBudgets = async (

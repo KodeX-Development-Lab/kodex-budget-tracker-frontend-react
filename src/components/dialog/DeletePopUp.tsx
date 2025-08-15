@@ -49,7 +49,7 @@ export function DeleteConfirmDialog({
               {cancelText}
             </Button>
           </AlertDialogCancel>
-          <AlertDialogAction className='bg-red-500 hover:bg-red-600'>
+          <AlertDialogAction className='bg-red-500 hover:bg-red-600' onClick={onConfirm}>
             
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {confirmText}

@@ -1,47 +1,68 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'
+import { useMemo, useState } from 'react'
+import { color } from 'framer-motion'
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from 'recharts'
 import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
+import LucideIconByName from '@/components/lucideiconbyname'
+import { BudgetOnCategory } from '@/features/budgets/types/budget-types'
+import { formatMoney } from '@/lib/utils'
 
-const data = [
-  { name: 'Salary', amount: 100000, value: 70, color: '#0088FE' },
-  { name: 'Part-time Teaching', amount: 100000, value: 22, color: '#00C49F' },
-  { name: 'Pocket-money', amount: 100000, value: 8, color: '#FFBB28' },
-]
+type BudgetPieChartProps = {
+  title: string
+  total_amount: number
+  data: BudgetOnCategory[]
+}
 
-export function BudgetPieChart() {
+type PieChartDataType = {
+  id: number
+  name: string
+  color: string
+  amount: number
+}
+
+export function BudgetPieChart({ title, total_amount, data }: BudgetPieChartProps) {
+
   return (
     <Card className='w-full max-w-md'>
       <CardHeader>
-        <h2 className='text-xl font-semibold'>Income Category Distribution</h2>
+        <h2 className='text-xl font-semibold'>{title} (Total: {formatMoney(total_amount)})</h2>
       </CardHeader>
       <CardContent>
-        <div className='flex flex-col gap-6 items-center'>
-          {/* Pie Chart - Added fixed height */}
+        <div className='flex flex-col items-center gap-6'>
           <div className='h-[300px] w-full'>
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width='100%' height='100%'>
               <PieChart>
                 <Pie
                   data={data}
-                  cx="50%"
-                  cy="50%"
+                  cx='50%'
+                  cy='50%'
                   labelLine={false}
                   outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  fill='#8884d8'
+                  dataKey='percentage'
+                  label={({ category, percent }) =>
+                    `${category.name} ${(percent * 100).toFixed(0)}%`
+                  }
                 >
                   {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                    <Cell key={`cell-${entry.category.name}`} fill={entry.category.color} />
                   ))}
                 </Pie>
-                <Tooltip 
-                  formatter={(value, name, props) => [
-                    `${value}%`, 
-                    props.payload.name,
-                    `$${props.payload.amount.toLocaleString()}`
+                <Tooltip
+                  formatter={(percentage, name, props) => [
+                    `${percentage}%`,
+                    props.payload.category.name,
+                    `$${props.payload.amount.toLocaleString()}`,
                   ]}
                 />
-                <Legend />
+                {/* <Legend /> */}
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -49,13 +70,18 @@ export function BudgetPieChart() {
           {/* Legend */}
           <div className='space-y-3'>
             {data.map((item) => (
-              <div key={item.name} className='flex items-center gap-2'>
+              <div key={item.category.name} className='flex items-center gap-2'>
                 <div
-                  className='h-4 w-4 rounded-full'
-                  style={{ backgroundColor: item.color }}
-                />
+                  className='flex h-12 w-12 items-center justify-center rounded-full p-3'
+                  style={{ backgroundColor: item.category.color }}
+                >
+                  <span className='flex items-center justify-center text-xl text-white'>
+                    <LucideIconByName name={item.category.icon.name} />
+                  </span>
+                </div>
                 <Label className='font-medium'>
-                  {item.name} (${item.amount.toLocaleString()}) - {item.value}%
+                  {item.category.name} ({item.amount.toLocaleString()}) -{' '}
+                  {item.percentage}%
                 </Label>
               </div>
             ))}

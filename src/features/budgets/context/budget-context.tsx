@@ -22,8 +22,6 @@ interface Props {
 
 export default function BudgetContextProvider({ children }: Props) {
   const [isLoading, setIsLoading] = useState(false)
-  const [brief, setBrief] = useState<TotalBriefType>()
-  const [budgets, setBudgets] = useState<PaginationResponseType<BudgetItem>>()
   const [categories, setCategories] = useState<CategoryType[]>()
 
   const {
@@ -32,29 +30,29 @@ export default function BudgetContextProvider({ children }: Props) {
     error: categoriesError,
   } = useCategories()
 
-  const {
-    data: budgetData,
-    isLoading: isBudgetsLoading,
-    error: budgetsError,
-  } = useBudgetList()
+  // const {
+  //   data: budgetData,
+  //   isLoading: isBudgetsLoading,
+  //   error: budgetsError,
+  // } = useBudgetList()
 
   useMemo(() => {
-    setIsLoading(isCategoriesLoading || isBudgetsLoading)
-    setBrief(budgetData?.brief)
-    setBudgets(budgetData?.budgets)
+    setIsLoading(isCategoriesLoading)
+    // setBrief(budgetData?.brief)
+    // setBudgets(budgetData?.budgets)
     setCategories(categoriesData)
   }, [
     isCategoriesLoading,
-    isBudgetsLoading,
-    budgetData,
+    // isBudgetsLoading,
+    // budgetData,
     categoriesData,
     categoriesError,
-    budgetsError,
+    // budgetsError,
   ])
 
   return (
     <BudgetContext.Provider
-      value={{ isLoading, brief, budgets, categories, setCategories }}
+      value={{ isLoading, categories, setCategories }}
     >
       {children}
     </BudgetContext.Provider>
@@ -66,7 +64,7 @@ export const useBudgetContext = () => {
   const budgetContext = React.useContext(BudgetContext)
 
   if (!budgetContext) {
-    throw new Error('useTasks has to be used within <budgetContext>')
+    throw new Error('useBudgetContext has to be used within <budgetContext>')
   }
 
   return budgetContext

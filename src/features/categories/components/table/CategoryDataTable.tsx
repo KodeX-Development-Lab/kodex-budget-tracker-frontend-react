@@ -18,17 +18,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { BudgetItem } from '../../types/budget-types'
+import { CategoryType } from '@/features/budgets/types/budget-types'
 
 interface DataTableProps {
-  data: BudgetItem[]
-  columns: ColumnDef<BudgetItem>[]
+  data: CategoryType[]
+  columns: ColumnDef<CategoryType>[]
 }
 
-export function BudgetDataTable({
-  data,
-  columns,
-}: DataTableProps) {
+export function CategoryDataTable({ data, columns }: DataTableProps) {
   const table = useReactTable({
     data,
     columns,
@@ -93,4 +90,4 @@ export function BudgetDataTable({
   )
 }
 
-export default BudgetDataTable
+export default CategoryDataTable

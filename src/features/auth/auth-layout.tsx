@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useAuth } from "./context/auth-context";
 import { useEffect } from "react";
+import { FullPageSpinner } from "@/components/ui/fullpage-spinner";
 
 interface Props {
   children: React.ReactNode
@@ -10,7 +11,7 @@ export default function AuthLayout({ children }: Props) {
   const { user, token, loading } = useAuth()
     const navigate = useNavigate()
   
-    if (loading) return <div>Loading...</div> // You can replace with a spinner
+    if (loading) return <FullPageSpinner /> // You can replace with a spinner
   
     useEffect(() => {
       if (!loading && token) {

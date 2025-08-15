@@ -4,23 +4,34 @@ import moment from 'moment'
 import { formatMoney } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { BudgetItem, TransactionTypes } from '../../types/budget-types'
+import LucideIconByName from '@/components/lucideiconbyname'
+import {
+  CategoryType,
+  TransactionTypes,
+} from '@/features/budgets/types/budget-types'
 
 export const columns = (
-  onEdit: (item: BudgetItem) => void,
+  onEdit: (item: CategoryType) => void,
   onDelete: (id: number) => void
-): ColumnDef<BudgetItem>[] => [
+): ColumnDef<CategoryType>[] => [
   {
-    accessorKey: 'processed_at',
-    header: 'Date',
-    enableSorting: true,
+    header: 'Symbol',
     cell: ({ row }) => {
-      return moment(row.getValue('processed_at')).format('DD-MM-YYYY h:mm A')
+      return (
+        <div
+          className='flex h-12 w-12 items-center justify-center rounded-full p-3'
+          style={{ backgroundColor: row.original.color }}
+        >
+          <span className='flex items-center justify-center text-xl text-white'>
+            <LucideIconByName name={row.original.icon.name} />
+          </span>
+        </div>
+      )
     },
   },
   {
-    accessorKey: 'category.name',
-    header: 'Category',
+    accessorKey: 'name',
+    header: 'Name',
   },
   {
     accessorKey: 'type',
@@ -33,32 +44,6 @@ export const columns = (
         <Badge variant='destructive'>{TransactionTypes.EXPENSE}</Badge>
       )
     },
-  },
-  {
-    accessorKey: 'amount',
-    header: 'Income',
-    enableSorting: true,
-    cell: ({ row }) => {
-      const type = row.getValue('type')
-      return type == TransactionTypes.INCOME
-        ? formatMoney(row.getValue('amount'))
-        : '-'
-    },
-  },
-  {
-    accessorKey: 'amount',
-    enableSorting: true,
-    header: 'Expense',
-    cell: ({ row }) => {
-      const type = row.getValue('type')
-      return type == TransactionTypes.EXPENSE
-        ? formatMoney(row.getValue('amount'))
-        : '-'
-    },
-  },
-  {
-    accessorKey: 'remark',
-    header: 'Remark',
   },
   {
     id: 'actions',

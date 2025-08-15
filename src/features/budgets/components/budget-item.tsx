@@ -14,18 +14,23 @@ import LucideIconByName from '@/components/lucideiconbyname'
 import { Button } from '../../../components/ui/button'
 import { BudgetItem, TransactionTypes } from '../types/budget-types'
 
-export const BudgetItemComponent = ({ item, onDelete }: { item: BudgetItem, onDelete: (id: string | number) => void; }) => {
+export const BudgetItemComponent = ({
+  item,
+  onDelete,
+}: {
+  item: BudgetItem
+  onDelete: (id: string | number) => void
+}) => {
   return (
-    <div className='grid grid-cols-10 gap-4 items-center my-3'>
+    <div className='my-3 grid grid-cols-10 items-center gap-4'>
       <div className='col-span-6 flex items-center gap-3'>
         <div
-          className='rounded-full p-3'
+          className='flex h-12 w-12 items-center justify-center rounded-full p-3'
           style={{ backgroundColor: item.category.color }}
         >
-          <span className='text-xl text-white'>
+          <span className='flex items-center justify-center text-xl text-white'>
             <LucideIconByName name={item.category.icon.name} />
           </span>
-          
         </div>
         <div>
           <div className='text-lg font-semibold'>{item.category.name}</div>
@@ -33,7 +38,9 @@ export const BudgetItemComponent = ({ item, onDelete }: { item: BudgetItem, onDe
         </div>
       </div>
       <div className='col-span-3 text-right'>
-        <span className={`font-semibold ${item.type == TransactionTypes.INCOME ? 'text-[var(--income)]' : 'text-[var(--expense)]'}`}>
+        <span
+          className={`font-semibold ${item.type == TransactionTypes.INCOME ? 'text-[var(--income)]' : 'text-[var(--expense)]'}`}
+        >
           {(item.type == TransactionTypes.INCOME ? '+' : '') + item.amount}
         </span>
       </div>
@@ -58,7 +65,10 @@ export const BudgetItemComponent = ({ item, onDelete }: { item: BudgetItem, onDe
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction className='bg-red-500 hover:bg-red-600' onClick={() => onDelete(item.id)}>
+              <AlertDialogAction
+                className='bg-red-500 hover:bg-red-600'
+                onClick={() => onDelete(item.id)}
+              >
                 Delete
               </AlertDialogAction>
             </AlertDialogFooter>

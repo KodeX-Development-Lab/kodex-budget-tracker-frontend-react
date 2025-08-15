@@ -25,10 +25,12 @@ import { RecentSales } from './components/recent-sales'
 
 export default function Dashboard() {
   
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: [dashboardQueryKey],
     queryFn: fetchDashboardData,
   })
+
+  if(isLoading) return <FullPageSpinner />
 
   return (
     <>

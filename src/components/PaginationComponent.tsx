@@ -1,30 +1,33 @@
-import { FC, Fragment, useMemo } from 'react';
-import classNames from 'classnames';
-import PaginationPerpageDropDown  from './PaginationPerpageDropDown';
-import useQueryParams from '@/hooks/useQueryParams';
+import { FC, Fragment, useMemo } from 'react'
+import classNames from 'classnames'
+import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react'
+import { Button } from './ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
 export interface TablePaginationInfo {
-  currentPage: number;
-  pageSize: number;
-  totalPages: number;
-  totalItems: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
+  currentPage: number
+  pageSize: number
+  totalPages: number
+  totalItems: number
+  hasNextPage: boolean
+  hasPreviousPage: boolean
 }
 
-interface PaginationProps {
-  pageInfo: TablePaginationInfo;
-  onNextPage: () => void;
-  onPreviousPage: () => void;
-  onGoToPage: (page: number) => void;
+interface PaginationComponentProps {
+  paginationInfo: TablePaginationInfo
+  onNextPage: () => void
+  onPreviousPage: () => void
+  onGoToPage: (page: number) => void
+  changePageSize: (pageSize: number) => void,
 }
 
-const PaginationCompoment: FC<PaginationProps> = ({
-  pageInfo,
+const PaginationComponent = ({
+  paginationInfo,
   onNextPage,
   onPreviousPage,
   onGoToPage,
-}) => {
+  changePageSize
+}: PaginationComponentProps) => {
   const {
     currentPage,
     pageSize,
@@ -32,114 +35,110 @@ const PaginationCompoment: FC<PaginationProps> = ({
     totalItems,
     hasNextPage,
     hasPreviousPage,
-  } = pageInfo;
+  } = paginationInfo
+
   const fromItemNumber = useMemo(
     () => (currentPage - 1) * pageSize + 1,
     [currentPage, pageSize]
-  );
+  )
 
   const toItemNumber = useMemo(() => {
-    const calculated = currentPage * pageSize;
-    return calculated > totalItems ? totalItems : calculated;
-  }, [currentPage, pageSize, totalItems]);
-
-  const { updateParams, params } = useQueryParams();
+    const calculated = currentPage * pageSize
+    return calculated > totalItems ? totalItems : calculated
+  }, [currentPage, pageSize, totalItems])
 
   return (
-    <div className="flex flex-col md:flex-row md:justify-between md:items-center">
-      <div className="flex items-center gap-2">
-        <span className="text-12 leading-[18px] text-graydark">DISPLAY</span>
-        <PaginationPerpageDropDown
-          mode="single"
-          value={pageSize}
-          onChange={(value: any) =>
-            updateParams({
-              limit: value,
-            })
-          }
-          options={[
-            { label: '10', value: 10 },
-            { label: '20', value: 20 },
-            { label: '30', value: 30 },
-            { label: '50', value: 50 },
-            { label: '100', value: 100 },
-          ]}
-          loading={false}
-          disabled={false}
-          searchable={false}
-          placeholder="Limit"
-          className="w-[100px]"
-        />
+    <div className='flex flex-col md:flex-row md:items-center md:justify-between'>
+      <div className='flex items-center gap-2'>
+        <span className='text-graydark'>DISPLAY</span>
+        <Select
+            value={`${pageSize}`}
+            onValueChange={(value) =>changePageSize(Number(value))}
+          >
+            <SelectTrigger className="h-8 w-[70px]">
+              <SelectValue placeholder={pageSize} />
+            </SelectTrigger>
+            <SelectContent side="top">
+              {[10, 20, 30, 50, 100].map((size) => (
+                <SelectItem key={size} value={`${size}`}>
+                  {size}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
       </div>
-      <p className="text-12 leading-[18px] text-graydark">
+      <p className='text-12 text-graydark leading-[18px]'>
         Displaying items from {fromItemNumber} to {toItemNumber} of total{' '}
         {totalItems} items.
       </p>
 
-      <div className="flex mt-5 md:mt-0 justify-center md:justify-start items-center lg:text-14 text-12 leading-[21px] font-medium">
-        <button
-          className={classNames('mr-3', {
-            'text-black2': hasPreviousPage,
-            'text-[#97A6B7] pointer-events-none': !hasPreviousPage,
-          })}
-          onClick={onPreviousPage}
-        >
-          Previous
-        </button>
+      {/* Page navigation */}
+      <div className='flex items-center space-x-6 lg:space-x-8'>
+        <div className='flex items-center space-x-2'>
+          <Button
+            variant='outline'
+            className='h-8 w-8 p-0'
+            onClick={onPreviousPage}
+            disabled={!hasPreviousPage}
+          >
+            <ChevronLeft className='h-4 w-4' />
+          </Button>
 
-        {Number.isInteger(totalPages) &&
-          totalPages > 0 &&
-          new Array(totalPages)?.fill(1).map((_, index) => {
-            const page = index + 1;
+          {Number.isInteger(totalPages) && totalPages > 0 && (
+            <div className='flex items-center space-x-1'>
+              {Array.from({ length: totalPages }, (_, index) => {
+                const page = index + 1
+                const showLeftEllipsis = currentPage > 4 && page === 2
+                const showRightEllipsis =
+                  currentPage < totalPages - 3 && page === totalPages - 1
 
-            // Smart ellipsis handling
-            if (
-              page !== 1 &&
-              page !== totalPages &&
-              ((page > currentPage && page - currentPage > 2) ||
-                (page < currentPage && currentPage - page > 2))
-            ) {
-              if (page === currentPage - 2 || page === currentPage + 2) {
+                if (showLeftEllipsis || showRightEllipsis) {
+                  return (
+                    <Button
+                      key={index}
+                      variant='ghost'
+                      className='h-8 w-8 p-0'
+                      disabled
+                    >
+                      <MoreHorizontal className='h-4 w-4' />
+                    </Button>
+                  )
+                }
+
+                if (
+                  page !== 1 &&
+                  page !== totalPages &&
+                  (page < currentPage - 2 || page > currentPage + 2)
+                ) {
+                  return null
+                }
+
                 return (
-                  <span
+                  <Button
                     key={index}
-                    className="mr-3 w-8 h-8 flex justify-center items-center rounded-md"
+                    variant={page === currentPage ? 'default' : 'ghost'}
+                    className='h-8 w-8 p-0'
+                    onClick={() => onGoToPage(page)}
                   >
-                    ...
-                  </span>
-                );
-              }
-              return <Fragment key={index}></Fragment>;
-            }
+                    {page}
+                  </Button>
+                )
+              })}
+            </div>
+          )}
 
-            return (
-              <button
-                key={index}
-                className={classNames(
-                  'mr-3 w-8 h-8 flex justify-center items-center rounded-md',
-                  {
-                    'bg-vorpblue text-white': page === currentPage,
-                  }
-                )}
-                onClick={() => onGoToPage(page)}
-              >
-                {page}
-              </button>
-            );
-          })}
-
-        <button
-          className={classNames({
-            'text-black2': hasNextPage,
-            'text-[#97A6B7] pointer-events-none': !hasNextPage,
-          })}
-          onClick={onNextPage}
-        >
-          Next
-        </button>
+          <Button
+            variant='outline'
+            className='h-8 w-8 p-0'
+            onClick={onNextPage}
+            disabled={!hasNextPage}
+          >
+            <ChevronRight className='h-4 w-4' />
+          </Button>
+        </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PaginationCompoment;
+export default PaginationComponent
